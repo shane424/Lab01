@@ -1,17 +1,25 @@
 package com.example.guilhermecortes.contactmanager;
 
 import android.app.Activity;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -19,8 +27,14 @@ import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.app.PendingIntent.getActivity;
 
 
 public class MainActivity extends Activity {
@@ -30,6 +44,11 @@ public class MainActivity extends Activity {
     List<Contact> Contacts = new ArrayList<Contact>();
     ListView contactListView;
     Uri imageURI = null;
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +76,7 @@ public class MainActivity extends Activity {
         tabSpec.setIndicator("List");
         tabHost.addTab(tabSpec);
 
+        CheckBox checkBoxAddress = (CheckBox) findViewById(R.id.checkBox3);
 
         final Button addBtn = (Button) findViewById(R.id.btnAdd);
         addBtn.setOnClickListener(new View.OnClickListener() {
@@ -96,20 +116,63 @@ public class MainActivity extends Activity {
             }
         });
 
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
-    public void onActivityResult(int reqCode, int resCode, Intent data){
-        if (resCode == RESULT_OK){
-            if (reqCode == 1){
+    public void onActivityResult(int reqCode, int resCode, Intent data) {
+        if (resCode == RESULT_OK) {
+            if (reqCode == 1) {
                 imageURI = data.getData();
                 contactImageImgView.setImageURI(data.getData());
             }
         }
     }
 
-    private void populateList(){
+    private void populateList() {
         ArrayAdapter<Contact> adapter = new ContactListAdapter();
         contactListView.setAdapter(adapter);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Main Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app deep link URI is correct.
+                Uri.parse("android-app://com.example.guilhermecortes.contactmanager/http/host/path")
+        );
+        AppIndex.AppIndexApi.start(client, viewAction);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Main Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app deep link URI is correct.
+                Uri.parse("android-app://com.example.guilhermecortes.contactmanager/http/host/path")
+        );
+        AppIndex.AppIndexApi.end(client, viewAction);
+        client.disconnect();
     }
 
     //add contact
@@ -117,14 +180,14 @@ public class MainActivity extends Activity {
 //        Contacts.add(new Contact(name, phone, email, address));
 //    }
 
-    private class ContactListAdapter extends ArrayAdapter<Contact>{
-        public ContactListAdapter(){
-            super (MainActivity.this, R.layout.listview_item, Contacts);
+    private class ContactListAdapter extends ArrayAdapter<Contact> {
+        public ContactListAdapter() {
+            super(MainActivity.this, R.layout.listview_item, Contacts);
         }
 
         //criar função para retornar o emelento do array
         @Override
-        public View getView(int position, View view, ViewGroup parent){
+        public View getView(int position, View view, ViewGroup parent) {
             if (view == null)
                 view = getLayoutInflater().inflate(R.layout.listview_item, parent, false);
 
@@ -161,10 +224,39 @@ public class MainActivity extends Activity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
+        // Checking to see if "Settings" was selected.
         if (id == R.id.action_settings) {
+            DialogFragment dialog = new PrivacyDialog();
+            dialog.show(getFragmentManager(), "privacy_settings");
+
+            // checking state of checkbox to see if it was selected or not
+            /*CheckBox checkBox3 = (CheckBox) findViewById(R.id.checkBox3);
+
+            // Get the shared prefs and set them
+            SharedPreferences sharedPrefs = getPreferences(Context.MODE_PRIVATE);
+            if (checkBox3 != null) {
+                checkBox3.setChecked(sharedPrefs.getBoolean(Integer.toString(R.id.checkBox3), false));
+            }*/
+
             return true;
         }
-
+        // This is called if no menu item was handled.
         return super.onOptionsItemSelected(item);
+    }
+
+    public void addressClicked(View view) {
+        //code to check if this checkbox is checked!
+        CheckBox checkBox = ((CheckBox) view);
+
+        SharedPreferences.Editor editor = getPreferences(Context.MODE_PRIVATE).edit();
+
+        editor.putBoolean(Integer.toString(R.id.checkBox3), checkBox.isChecked());
+        Log.e("OnClick Handler", Boolean.toString(checkBox.isChecked()));
+        editor.apply();
+
+        checkBox.setClickable(checkBox.isChecked());
+
+        // update list to reflect changes
+        populateList();
     }
 }

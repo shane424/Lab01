@@ -47,6 +47,7 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="Address"
             android:id="@+id/cAddress"
+            android:autoLink="all"
             android:paddingLeft="10dp"
             android:paddingRight="10dp" />
     </LinearLayout>
