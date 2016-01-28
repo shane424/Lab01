@@ -41,5 +41,7 @@
     <string name="customInfoWindowOnTouchMessage">Hey, I just customized the CustomInfoWindows\'s onTouchListener()!</string>
     <string name="navigationdrawer_open">open</string>
     <string name="navigationdrawer_close">close</string>
-
+    <string name="mapbox_id_search">mapbox.search</string>
+    <string name="search_query_1">https://api.mapbox.com/geocoding/v5/mapbox.places/</string>
+    <string name="search_query_2">.json?access_token=</string>
 </resources>

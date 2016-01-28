@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 		testFragmentNames.add(Menu.NONE, i++, Menu.NONE, getString(R.string.rotatedMapTestMap));
 		testFragmentNames.add(Menu.NONE, i++, Menu.NONE, getString(R.string.clusteredMarkersTestMap));
 		testFragmentNames.add(Menu.NONE, i++, Menu.NONE, getString(R.string.mbTilesTestMap));
-        testFragmentNames.add(Menu.NONE, i, Menu.NONE, getString(R.string.draggableMarkersTestMap));
+		testFragmentNames.add(Menu.NONE, i, Menu.NONE, getString(R.string.draggableMarkersTestMap));
 
 
 		// Set the drawer toggle as the DrawerListener
@@ -158,9 +158,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 			case 19:
 				fragment = new MBTilesTestFragment();
 				break;
-            case 20:
-                fragment = new DraggableMarkersTestFragment();
-                break;
+			case 20:
+				fragment = new DraggableMarkersTestFragment();
+				break;
 			default:
 				fragment = new MainTestFragment();
 				break;
