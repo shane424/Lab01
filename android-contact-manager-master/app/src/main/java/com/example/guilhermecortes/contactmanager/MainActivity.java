@@ -44,6 +44,7 @@ public class MainActivity extends Activity {
     List<Contact> Contacts = new ArrayList<Contact>();
     ListView contactListView;
     Uri imageURI = null;
+    SharedPreferences sharedPreferences;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -75,8 +76,6 @@ public class MainActivity extends Activity {
         tabSpec.setContent(R.id.tabContactList);
         tabSpec.setIndicator("List");
         tabHost.addTab(tabSpec);
-
-        CheckBox checkBoxAddress = (CheckBox) findViewById(R.id.checkBox3);
 
         final Button addBtn = (Button) findViewById(R.id.btnAdd);
         addBtn.setOnClickListener(new View.OnClickListener() {
@@ -119,6 +118,7 @@ public class MainActivity extends Activity {
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+        sharedPreferences = getPreferences(Context.MODE_PRIVATE);
     }
 
     public void onActivityResult(int reqCode, int resCode, Intent data) {
@@ -195,12 +195,18 @@ public class MainActivity extends Activity {
 
             TextView name = (TextView) view.findViewById(R.id.contactName);
             name.setText(currentContact.get_name());
+
+            // The below 3 statements are used to update the text to hyperlink
+            // or normal next depending on the state of their checkbox.
             TextView phone = (TextView) view.findViewById(R.id.phoneNumber);
-            phone.setText(currentContact.get_phone());
+            phone.setText(makeLinkOrText(R.id.checkBox, currentContact.get_phone()));
+
             TextView email = (TextView) view.findViewById(R.id.emailAddress);
-            email.setText(currentContact.get_email());
+            email.setText(makeLinkOrText(R.id.checkBox2, currentContact.get_email()));
+
             TextView address = (TextView) view.findViewById(R.id.cAddress);
-            address.setText(currentContact.get_address());
+            address.setText(makeLinkOrText(R.id.checkBox3, currentContact.get_address()));
+
             ImageView ivContactImage = (ImageView) view.findViewById(R.id.ivContactImage);
             ivContactImage.setImageURI(currentContact.get_imageURI());
 
@@ -224,39 +230,34 @@ public class MainActivity extends Activity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        // Checking to see if "Settings" was selected.
+        // Checking to see if "Settings" was selected. If it was, bring up dialog with checkboxes
         if (id == R.id.action_settings) {
             DialogFragment dialog = new PrivacyDialog();
             dialog.show(getFragmentManager(), "privacy_settings");
-
-            // checking state of checkbox to see if it was selected or not
-            /*CheckBox checkBox3 = (CheckBox) findViewById(R.id.checkBox3);
-
-            // Get the shared prefs and set them
-            SharedPreferences sharedPrefs = getPreferences(Context.MODE_PRIVATE);
-            if (checkBox3 != null) {
-                checkBox3.setChecked(sharedPrefs.getBoolean(Integer.toString(R.id.checkBox3), false));
-            }*/
-
             return true;
         }
         // This is called if no menu item was handled.
         return super.onOptionsItemSelected(item);
     }
 
-    public void addressClicked(View view) {
+    // sets the checkbox state which then instantly changes the text to hyperlink/normal text
+    // depening on if box was checked/not checked respectively
+    public void checkBox3WasClicked(View view) {
         //code to check if this checkbox is checked!
         CheckBox checkBox = ((CheckBox) view);
 
         SharedPreferences.Editor editor = getPreferences(Context.MODE_PRIVATE).edit();
 
         editor.putBoolean(Integer.toString(R.id.checkBox3), checkBox.isChecked());
-        Log.e("OnClick Handler", Boolean.toString(checkBox.isChecked()));
+        //Log.e("OnClick Handler", Boolean.toString(checkBox.isChecked()));
         editor.apply();
-
-        checkBox.setClickable(checkBox.isChecked());
 
         // update list to reflect changes
         populateList();
+    }
+
+    // long logic statement that is used in the text setting area to set the text to normal/hyperlink
+    private CharSequence makeLinkOrText(int attributeId, String myStr) {
+        return sharedPreferences.getBoolean(Integer.toString(attributeId), false) ? Html.fromHtml("<a href=\"\">"+ myStr +"</a>") : myStr;
     }
 }

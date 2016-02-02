@@ -3,13 +3,18 @@ package com.mapbox.mapboxsdk.android.testapp;
 import android.annotation.TargetApi;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.mapbox.mapboxsdk.geometry.BoundingBox;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.overlay.Icon;
 import com.mapbox.mapboxsdk.overlay.Marker;
+import com.mapbox.mapboxsdk.tileprovider.tilesource.ITileLayer;
+import com.mapbox.mapboxsdk.tileprovider.tilesource.MapboxTileLayer;
+import com.mapbox.mapboxsdk.tileprovider.tilesource.WebSourceTileLayer;
 import com.mapbox.mapboxsdk.views.MapView;
 
 import org.json.JSONArray;
@@ -29,6 +34,7 @@ public class NavigationMapFragment extends Fragment {
     private String locName, locDescription, addressNo, street, city, state, zip, latString, lngString;
     private double lat, lng;
     private Marker navMarker;
+    private String streetMap = "OpenStreetMap";
    // private TextView textView;
 
     @Override
@@ -47,8 +53,8 @@ public class NavigationMapFragment extends Fragment {
             locObject = parentArray.getJSONObject(0);
             coordArray = locObject.getJSONArray("center");
 
-            lat = coordArray.getDouble(0);
-            lng = coordArray.getDouble(1);
+            lng = coordArray.getDouble(0);
+            lat = coordArray.getDouble(1);
             latLng = new LatLng(lat, lng);
 
             //textView.setText("Test 2");
@@ -82,16 +88,55 @@ public class NavigationMapFragment extends Fragment {
 
 
             mapView = (MapView) view.findViewById(R.id.navMapView);
+            //replaceMapView(streetMap);
 
             navMarker = new Marker(mapView, locName, locDescription, latLng);
             navMarker.setIcon(new Icon(getActivity(), Icon.Size.SMALL, "marker-stroked", "FF0000"));
-
-            mapView.setCenter(latLng);
-            mapView.setZoom(14);
+            replaceMapView(streetMap);
             mapView.addMarker(navMarker);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         return view;
+    }
+
+
+    protected void replaceMapView(String layer) {
+        ITileLayer source;
+        BoundingBox box;
+        if (layer.equalsIgnoreCase("OpenStreetMap")) {
+            source = new WebSourceTileLayer("openstreetmap",
+                    "http://tile.openstreetmap.org/{z}/{x}/{y}.png").setName("OpenStreetMap")
+                    .setAttribution("© OpenStreetMap Contributors")
+                    .setMinimumZoomLevel(1)
+                    .setMaximumZoomLevel(18);
+        } else if (layer.equalsIgnoreCase("OpenSeaMap")) {
+            source = new WebSourceTileLayer("openstreetmap",
+                    "http://tile.openstreetmap.org/seamark/{z}/{x}/{y}.png").setName(
+                    "OpenStreetMap")
+                    .setAttribution("© OpenStreetMap Contributors")
+                    .setMinimumZoomLevel(1)
+                    .setMaximumZoomLevel(18);
+        } else if (layer.equalsIgnoreCase("mapquest")) {
+            source = new WebSourceTileLayer("mapquest",
+                    "http://otile1.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png").setName(
+                    "MapQuest Open Aerial")
+                    .setAttribution(
+                            "Tiles courtesy of MapQuest and OpenStreetMap contributors.")
+                    .setMinimumZoomLevel(1)
+                    .setMaximumZoomLevel(18);
+        } else {
+            source = new MapboxTileLayer(layer);
+        }
+
+        mapView.setTileSource(source);
+        box = source.getBoundingBox();
+        mapView.setScrollableAreaLimit(box);
+        mapView.setMinZoomLevel(mapView.getTileProvider().getMinimumZoomLevel());
+        mapView.setMaxZoomLevel(mapView.getTileProvider().getMaximumZoomLevel());
+        mapView.setCenter(latLng);
+        mapView.setZoom(14);
+
+        Log.d("MainActivity", "zoomToBoundingBox " + box.toString());
     }
 }

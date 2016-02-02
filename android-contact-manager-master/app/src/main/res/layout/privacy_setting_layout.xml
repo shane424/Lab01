@@ -94,7 +94,7 @@
             android:id="@+id/checkBox3"
             android:checked="false"
             android:layout_below="@+id/checkBox2"
-            android:onClick="addressClicked"
+            android:onClick="checkBox3WasClicked"
             android:layout_alignStart="@+id/checkBox2" />
     </RelativeLayout>
 </LinearLayout>

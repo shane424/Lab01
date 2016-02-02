@@ -27,11 +27,10 @@ public class PrivacyDialog extends DialogFragment {
 
         dialog.setView(privacyLayout);
 
-        // setting the check box state
         CheckBox checkBox3 = (CheckBox) privacyLayout.findViewById(R.id.checkBox3);
         SharedPreferences sharedPrefs = getActivity().getPreferences(Context.MODE_PRIVATE);
 
-        Log.d("INFO", Boolean.toString(sharedPrefs.getBoolean(Integer.toString(R.id.checkBox3), false)));
+        //Log.d("INFO", Boolean.toString(sharedPrefs.getBoolean(Integer.toString(R.id.checkBox3), false)));
 
         checkBox3.setChecked(sharedPrefs.getBoolean(Integer.toString(R.id.checkBox3), false));
 
