@@ -13,13 +13,16 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+import org.json.JSONObject;
+
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, NavigationFragment.onSearchListener {
 
 	private DrawerLayout          mDrawerLayout;
 	private ActionBarDrawerToggle mDrawerToggle;
 	private NavigationView        mNavigationView;
 	private Menu                  testFragmentNames;
 	private int selectedFragmentIndex = 0;
+	private FragmentManager fragmentManager = getSupportFragmentManager();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 		// Set the adapter for the list view
 		testFragmentNames = mNavigationView.getMenu();
 		int i = 0;
+		testFragmentNames.add(Menu.NONE, i++, Menu.NONE, getString(R.string.Navigation));
 		testFragmentNames.add(Menu.NONE, i++, Menu.NONE, getString(R.string.mainTestMap));
 		testFragmentNames.add(Menu.NONE, i++, Menu.NONE, getString(R.string.alternateTestMap));
 		testFragmentNames.add(Menu.NONE, i++, Menu.NONE, getString(R.string.markersTestMap));
@@ -55,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 		testFragmentNames.add(Menu.NONE, i++, Menu.NONE, getString(R.string.rotatedMapTestMap));
 		testFragmentNames.add(Menu.NONE, i++, Menu.NONE, getString(R.string.clusteredMarkersTestMap));
 		testFragmentNames.add(Menu.NONE, i++, Menu.NONE, getString(R.string.mbTilesTestMap));
-        testFragmentNames.add(Menu.NONE, i, Menu.NONE, getString(R.string.draggableMarkersTestMap));
+		testFragmentNames.add(Menu.NONE, i, Menu.NONE, getString(R.string.draggableMarkersTestMap));
 
 
 		// Set the drawer toggle as the DrawerListener
@@ -65,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 		setSupportActionBar(toolbar);
 
 		// Set MainTestFragment
-		selectItem(0);
+		selectItem(1); // Changed to 1 because Navigation is 0 now.
 	}
 
 	@Override
@@ -98,72 +102,74 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 		switch (position) {
 			case 0:
-				fragment = new MainTestFragment();
+				fragment = new NavigationFragment();
 				break;
 			case 1:
-				fragment = new AlternateMapTestFragment();
+				fragment = new MainTestFragment();
 				break;
 			case 2:
-				fragment = new MarkersTestFragment();
+				fragment = new AlternateMapTestFragment();
 				break;
 			case 3:
-				fragment = new ItemizedIconOverlayTestFragment();
+				fragment = new MarkersTestFragment();
 				break;
 			case 4:
-				fragment = new LocalGeoJSONTestFragment();
+				fragment = new ItemizedIconOverlayTestFragment();
 				break;
 			case 5:
-				fragment = new LocalOSMTestFragment();
+				fragment = new LocalGeoJSONTestFragment();
 				break;
 			case 6:
-				fragment = new DiskCacheDisabledTestFragment();
+				fragment = new LocalOSMTestFragment();
 				break;
 			case 7:
-				fragment = new OfflineCacheTestFragment();
+				fragment = new DiskCacheDisabledTestFragment();
 				break;
 			case 8:
-				fragment = new ProgrammaticTestFragment();
+				fragment = new OfflineCacheTestFragment();
 				break;
 			case 9:
-				fragment = new WebSourceTileTestFragment();
+				fragment = new ProgrammaticTestFragment();
 				break;
 			case 10:
-				fragment = new LocateMeTestFragment();
+				fragment = new WebSourceTileTestFragment();
 				break;
 			case 11:
-				fragment = new PathTestFragment();
+				fragment = new LocateMeTestFragment();
 				break;
 			case 12:
-				fragment = new BingTileTestFragment();
+				fragment = new PathTestFragment();
 				break;
 			case 13:
-				fragment = new SaveMapOfflineTestFragment();
+				fragment = new BingTileTestFragment();
 				break;
 			case 14:
-				fragment = new TapForUTFGridTestFragment();
+				fragment = new SaveMapOfflineTestFragment();
 				break;
 			case 15:
-				fragment = new CustomMarkerTestFragment();
+				fragment = new TapForUTFGridTestFragment();
 				break;
 			case 16:
-				fragment = new RotatedMapTestFragment();
+				fragment = new CustomMarkerTestFragment();
 				break;
 			case 17:
-				fragment = new ClusteredMarkersTestFragment();
+				fragment = new RotatedMapTestFragment();
 				break;
 			case 18:
+				fragment = new ClusteredMarkersTestFragment();
+				break;
+			case 19:
 				fragment = new MBTilesTestFragment();
 				break;
-            case 19:
-                fragment = new DraggableMarkersTestFragment();
-                break;
+			case 20:
+				fragment = new DraggableMarkersTestFragment();
+				break;
 			default:
 				fragment = new MainTestFragment();
 				break;
 		}
 
 		// Insert the fragment by replacing any existing fragment
-		FragmentManager fragmentManager = getSupportFragmentManager();
 		fragmentManager.beginTransaction()
 				.replace(R.id.content_frame, fragment)
 				.commit();
@@ -189,5 +195,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 		} else {
 			super.onBackPressed();
 		}
+	}
+
+	@Override
+	public void onLocationFound(String s) {
+		NavigationMapFragment f = new NavigationMapFragment();
+		Bundle b = new Bundle();
+		b.putString("JSONObject", s);
+		f.setArguments(b);
+		fragmentManager.beginTransaction()
+				.replace(R.id.content_frame, f)
+				.commit();
+
+		mDrawerLayout.closeDrawer(mNavigationView);
 	}
 }

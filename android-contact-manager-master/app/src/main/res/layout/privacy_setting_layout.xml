@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1"><![CDATA[
+
+    ;
+        android:checked="false" />
+
+
+
+
+    ]]>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Privacy Setting"
+        android:id="@+id/textView6" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Item"
+            android:id="@+id/textView2"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:textSize="20dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Allow Access"
+            android:id="@+id/textView3"
+            android:textSize="20dp"
+            android:layout_marginEnd="47dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Phone Number"
+            android:id="@+id/textView4"
+            android:layout_below="@+id/textView2"
+            android:layout_alignParentStart="true"
+            android:textSize="20dp"
+            android:layout_marginTop="5dp" />
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/checkBox"
+            android:checked="false"
+            android:layout_below="@+id/textView3"
+            android:layout_alignStart="@+id/textView3" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Email"
+            android:id="@+id/textView5"
+            android:layout_below="@+id/checkBox"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="5dp"
+            android:textSize="20dp" />
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/checkBox2"
+            android:checked="false"
+            android:layout_below="@+id/checkBox"
+            android:layout_alignEnd="@+id/checkBox" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Address"
+            android:id="@+id/textView7"
+            android:layout_below="@+id/checkBox2"
+            android:layout_alignParentStart="true"
+            android:textSize="20dp"
+            android:layout_marginTop="5dp" />
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/checkBox3"
+            android:checked="false"
+            android:layout_below="@+id/checkBox2"
+            android:onClick="addressClicked"
+            android:layout_alignStart="@+id/checkBox2" />
+    </RelativeLayout>
+</LinearLayout>
