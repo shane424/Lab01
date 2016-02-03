@@ -9,6 +9,21 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         mapbox:mapid="@string/mapbox_id_street"
+        android:text="@string/navLink"
+        mapbox:accessToken="@string/testAccessToken"/>
+
+    <TextView
+        android:id="@+id/navLink"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:autoLink="web"
+        android:gravity="center"
+        android:padding="20px"
+        android:text="@string/navLink"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:linksClickable="true"
+        android:textColor="#165df6"
         mapbox:accessToken="@string/testAccessToken"/>
 
 </FrameLayout>

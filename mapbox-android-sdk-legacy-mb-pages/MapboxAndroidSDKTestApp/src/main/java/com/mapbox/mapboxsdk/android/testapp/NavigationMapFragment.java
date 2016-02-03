@@ -83,6 +83,7 @@ public class NavigationMapFragment extends Fragment {
             latString = String.valueOf(lat);
             lngString = String.valueOf(lng);
 
+
             //textView.setText("Test 6");
             //textView.setText(locName + "\n" + locDescription + "\n" + latString + ", " + lngString);
 
@@ -90,7 +91,7 @@ public class NavigationMapFragment extends Fragment {
             mapView = (MapView) view.findViewById(R.id.navMapView);
             //replaceMapView(streetMap);
 
-            navMarker = new Marker(mapView, locName, locDescription, latLng);
+            navMarker = new Marker(mapView, locName, locDescription,latLng);
             navMarker.setIcon(new Icon(getActivity(), Icon.Size.SMALL, "marker-stroked", "FF0000"));
             replaceMapView(streetMap);
             mapView.addMarker(navMarker);

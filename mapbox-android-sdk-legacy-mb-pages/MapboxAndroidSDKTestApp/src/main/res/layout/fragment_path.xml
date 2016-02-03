@@ -12,4 +12,5 @@
         mapbox:mapid="@string/mapbox_id_street"
         mapbox:accessToken="@string/testAccessToken"/>
 
+
 </FrameLayout>
