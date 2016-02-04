@@ -4,7 +4,8 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+    android:clickable="false">
 
     <LinearLayout
             android:background="@color/white"
@@ -37,11 +38,11 @@
                 android:id="@+id/tooltip_subdescription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
+                android:textColor="#0026ff"
                 android:textSize="12sp"
                 android:maxEms="17"
                 android:text="@string/toolTipAddress"
-                android:visibility="gone"/>
+                android:clickable="true" />
     </LinearLayout>
 
     <com.mapbox.mapboxsdk.views.TipView

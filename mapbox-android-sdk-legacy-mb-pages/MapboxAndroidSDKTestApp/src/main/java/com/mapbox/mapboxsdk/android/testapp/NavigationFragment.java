@@ -63,9 +63,9 @@ public class NavigationFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_navigation, container, false);
 
         inputAddress = (EditText) view.findViewById(R.id.InputAddress);
-        search1 = String.format(getResources().getString(R.string.search_query_1));
-        search2 = String.format(getResources().getString(R.string.search_query_2));
-        token = String.format(getResources().getString(R.string.AccessToken));
+        search1 = getResources().getString(R.string.search_query_1);
+        search2 = getResources().getString(R.string.search_query_2);
+        token = getResources().getString(R.string.AccessToken);
 
         searchButton = (Button)view.findViewById(R.id.searchButton);
         searchButton.setOnClickListener(new View.OnClickListener() {

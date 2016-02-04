@@ -135,7 +135,7 @@ public class NavigationMapFragment extends Fragment {
         mapView.setMinZoomLevel(mapView.getTileProvider().getMinimumZoomLevel());
         mapView.setMaxZoomLevel(mapView.getTileProvider().getMaximumZoomLevel());
         mapView.setCenter(latLng);
-        mapView.setZoom(14);
+        mapView.setZoom(8);
 
         Log.d("MainActivity", "zoomToBoundingBox " + box.toString());
     }

@@ -24,6 +24,7 @@ import com.mapbox.mapboxsdk.views.util.constants.MapViewConstants;
 public class Marker implements MapViewConstants, ClusterItem {
 
     private static String TAG = "Marker";
+    private String navText = "navigate here...";
 
     public static final int ITEM_STATE_FOCUSED_MASK = 4;
     public static final int ITEM_STATE_PRESSED_MASK = 1;
@@ -83,8 +84,11 @@ public class Marker implements MapViewConstants, ClusterItem {
         if (mv != null) {
             this.context = mv.getContext();
         }
+
+        navText
         this.setTitle(aTitle);
         this.setDescription(aDescription);
+        this.setSubDescription(navText);
         this.mLatLng = aLatLng;
         mParentHolder = null;
         mAnchor = DEFAULT_PIN_ANCHOR;
