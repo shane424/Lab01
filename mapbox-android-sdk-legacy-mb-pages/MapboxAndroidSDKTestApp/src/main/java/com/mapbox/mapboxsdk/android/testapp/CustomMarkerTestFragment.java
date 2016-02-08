@@ -34,6 +34,8 @@ public class CustomMarkerTestFragment extends Fragment {
         bigCity.setToolTip(new CustomInfoWindow(mv));
         mv.addMarker(bigCity);
 
+
+
         return view;
     }
 }

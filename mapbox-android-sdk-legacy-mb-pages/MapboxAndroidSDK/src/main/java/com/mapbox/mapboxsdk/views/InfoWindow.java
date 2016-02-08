@@ -149,7 +149,13 @@ public class InfoWindow {
             subDescText.setText(subDesc);
             subDescText.setVisibility(View.VISIBLE);
         }
-    }
+        subDescText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // WORK IN HERE FOR THE CLICKABLE OBJECT!
+            }
+        });
+        }
 
     public void onClose() {
         //by default, do nothing

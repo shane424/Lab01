@@ -85,7 +85,7 @@ public class Marker implements MapViewConstants, ClusterItem {
             this.context = mv.getContext();
         }
 
-        navText
+        //navText
         this.setTitle(aTitle);
         this.setDescription(aDescription);
         this.setSubDescription(navText);
