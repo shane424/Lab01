@@ -30,17 +30,12 @@ import java.net.URL;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-/**
- * Created by smith6s3 on 1/26/2016.
- */
-
 @TargetApi(20)
 public class NavigationFragment extends Fragment {
 
     private Button searchButton;
     private EditText inputAddress;
     private String addressUrl, search1, search2, token;
-    private TextView test;
 
     private onSearchListener mCallBack;
 
@@ -76,8 +71,6 @@ public class NavigationFragment extends Fragment {
                 downloadGeoJsonFile.execute(addressUrl);
             }
         });
-
-        test = (TextView) view.findViewById(R.id.textView);
 
         return view;
     }
@@ -123,7 +116,6 @@ public class NavigationFragment extends Fragment {
 
         @Override
         protected void onPostExecute(String s) {
-            test.setText(s);
             mCallBack.onLocationFound(s);
         }
 

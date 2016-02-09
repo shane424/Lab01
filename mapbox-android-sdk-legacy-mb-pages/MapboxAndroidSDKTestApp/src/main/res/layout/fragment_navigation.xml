@@ -10,6 +10,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/InputAddress"
         android:hint="Input Address"
+        android:text="600 Faircrest St"
         android:textColorHint="#9c9c9c"
         android:textColor="#9c9c9c" />
 
@@ -20,11 +21,5 @@
         android:id="@+id/searchButton"
         android:layout_gravity="right"
         android:layout_marginTop="-50dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/textView" />
 
 </LinearLayout>

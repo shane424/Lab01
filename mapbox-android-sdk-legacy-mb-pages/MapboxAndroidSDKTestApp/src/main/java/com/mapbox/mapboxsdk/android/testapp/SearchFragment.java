@@ -7,10 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-/**
- * Created by Alex on 1/28/2016.
- */
-
 @TargetApi(20)
 public class SearchFragment extends Fragment{
 

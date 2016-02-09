@@ -8,6 +8,7 @@ import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
+import android.view.View;
 
 import com.mapbox.mapboxsdk.R;
 import com.mapbox.mapboxsdk.clustering.ClusterItem;
@@ -24,7 +25,6 @@ import com.mapbox.mapboxsdk.views.util.constants.MapViewConstants;
 public class Marker implements MapViewConstants, ClusterItem {
 
     private static String TAG = "Marker";
-    private String navText = "navigate here...";
 
     public static final int ITEM_STATE_FOCUSED_MASK = 4;
     public static final int ITEM_STATE_PRESSED_MASK = 1;
@@ -85,10 +85,8 @@ public class Marker implements MapViewConstants, ClusterItem {
             this.context = mv.getContext();
         }
 
-        //navText
         this.setTitle(aTitle);
         this.setDescription(aDescription);
-        this.setSubDescription(navText);
         this.mLatLng = aLatLng;
         mParentHolder = null;
         mAnchor = DEFAULT_PIN_ANCHOR;
@@ -532,6 +530,19 @@ public class Marker implements MapViewConstants, ClusterItem {
         Point tooltipH = getAnchor(HotspotPlace.TOP_CENTER);
         markerH.offset(-tooltipH.x, tooltipH.y);
         tooltip.open(this, this.getPoint(), markerH.x, markerH.y);
+        if (panIntoView) {
+            aMapView.getController().animateTo(getPoint());
+        }
+
+        bubbleShowing = true;
+        tooltip.setBoundMarker(this);
+    }
+    public void showBubble(InfoWindow tooltip, MapView aMapView, boolean panIntoView, View.OnClickListener navigatorClick) {
+        //offset the tooltip to be top-centered on the marker:
+        Point markerH = getAnchor();
+        Point tooltipH = getAnchor(HotspotPlace.TOP_CENTER);
+        markerH.offset(-tooltipH.x, tooltipH.y);
+        tooltip.open(this, this.getPoint(), markerH.x, markerH.y, navigatorClick);
         if (panIntoView) {
             aMapView.getController().animateTo(getPoint());
         }

@@ -46,6 +46,7 @@
     <string name="search_query_1">https://api.mapbox.com/geocoding/v5/mapbox.places/</string>
     <string name="search_query_2">.json?access_token=</string>
     <string name="navHyperlink">navigate here</string>
+    <string name="routeDialogTitle">Choose Route</string>
 </resources>
 
 
