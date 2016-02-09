@@ -38,8 +38,15 @@
     <string name="goToButtonText">Go To</string>
     <string name="animatedMapButtonText">Animate</string>
     <string name="testAccessToken">pk.eyJ1IjoiYmxlZWdlIiwiYSI6IkRGLTFPU00ifQ.qJpq3jytAL9A-z_tkNypqg</string>
+    <string name="AccessToken">pk.eyJ1Ijoia2Vyc2V5bWEiLCJhIjoiY2lrMzJyajNrMzl2bHZnbHp0a2k4azk4ZyJ9.KY5TSlzcJtWwF6etB0vOWQ</string>
     <string name="customInfoWindowOnTouchMessage">Hey, I just customized the CustomInfoWindows\'s onTouchListener()!</string>
     <string name="navigationdrawer_open">open</string>
     <string name="navigationdrawer_close">close</string>
-
+    <string name="mapbox_id_search">mapbox.search</string>
+    <string name="search_query_1">https://api.mapbox.com/geocoding/v5/mapbox.places/</string>
+    <string name="search_query_2">.json?access_token=</string>
+    <string name="navHyperlink">navigate here</string>
+    <string name="routeDialogTitle">Choose Route</string>
 </resources>
+
+

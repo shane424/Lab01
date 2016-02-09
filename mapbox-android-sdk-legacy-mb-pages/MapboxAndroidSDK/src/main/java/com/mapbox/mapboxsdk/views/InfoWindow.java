@@ -1,6 +1,7 @@
 package com.mapbox.mapboxsdk.views;
 
 import android.content.Context;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -94,6 +95,16 @@ public class InfoWindow {
         mIsVisible = true;
         return this;
     }
+    public InfoWindow open(Marker object, LatLng position, int offsetX, int offsetY, View.OnClickListener navigatorClick) {
+        onOpen(object, navigatorClick);
+        MapView.LayoutParams lp = new MapView.LayoutParams(MapView.LayoutParams.WRAP_CONTENT,
+                MapView.LayoutParams.WRAP_CONTENT, position, MapView.LayoutParams.BOTTOM_CENTER,
+                offsetX, offsetY);
+        close(); //if it was already opened
+        mMapView.addView(mView, lp);
+        mIsVisible = true;
+        return this;
+    }
 
     /**
      * Close this InfoWindow if it is visible, otherwise don't do anything.
@@ -149,6 +160,25 @@ public class InfoWindow {
             subDescText.setText(subDesc);
             subDescText.setVisibility(View.VISIBLE);
         }
+    }
+    public void onOpen(Marker overlayItem, View.OnClickListener navigatorClick) {
+        String title = overlayItem.getTitle();
+        ((TextView) mView.findViewById(mTitleId /*R.id.title*/)).setText(title);
+        String snippet = overlayItem.getDescription();
+        ((TextView) mView.findViewById(mDescriptionId /*R.id.description*/)).setText(snippet);
+
+        //handle sub-description, hiding or showing the text view:
+        TextView subDescText = (TextView) mView.findViewById(mSubDescriptionId);
+        String subDesc = overlayItem.getSubDescription();
+        if ("".equals(subDesc)) {
+            subDescText.setVisibility(View.GONE);
+        } else {
+            subDescText.setText(Html.fromHtml(subDesc));
+            subDescText.setVisibility(View.VISIBLE);
+        }
+
+        subDescText.setClickable(true);
+        subDescText.setOnClickListener(navigatorClick);
     }
 
     public void onClose() {

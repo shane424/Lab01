@@ -417,6 +417,23 @@ public class MapView extends ViewGroup implements MapViewConstants, MapEventsRec
         return marker;
     }
 
+    public Marker addMarker(final Marker marker, OnClickListener navigationClick) {
+        if (firstMarker) {
+            defaultMarkerList.add(marker);
+            setDefaultItemizedOverlay(navigationClick);
+        } else {
+            if (!getOverlays().contains(defaultMarkerOverlay)) {
+                addItemizedOverlay(defaultMarkerOverlay);
+            }
+            defaultMarkerOverlay.addItem(marker);
+        }
+        marker.addTo(this);
+
+        firstMarker = false;
+        invalidate();
+        return marker;
+    }
+
     public void addMarkers(final List<Marker> markers) {
         if (firstMarker) {
             defaultMarkerList.addAll(markers);
@@ -467,6 +484,10 @@ public class MapView extends ViewGroup implements MapViewConstants, MapEventsRec
         selectMarker(marker, true);
     }
 
+    public void selectMarker(final Marker marker, OnClickListener navigationClick) {
+        selectMarker(marker, true, navigationClick);
+    }
+
     /**
      * Select a marker, showing a tooltip if display_bubble is set to true and
      * the marker has content that would appear within it.
@@ -485,6 +506,24 @@ public class MapView extends ViewGroup implements MapViewConstants, MapEventsRec
             currentTooltip = toolTip;
             if (mShouldDisplayBubble && displayBubble) {
                 marker.showBubble(currentTooltip, MapView.this, true);
+            }
+        }
+    }
+
+    public void selectMarker(final Marker marker, final boolean displayBubble, OnClickListener navigatorClick) {
+        InfoWindow toolTip = marker.getToolTip(MapView.this);
+
+        if (mMapViewListener != null) {
+            mMapViewListener.onTapMarker(MapView.this, marker);
+        }
+        closeCurrentTooltip();
+        if (toolTip != currentTooltip && marker.hasContent()) {
+            if (mMapViewListener != null) {
+                mMapViewListener.onShowMarker(MapView.this, marker);
+            }
+            currentTooltip = toolTip;
+            if (mShouldDisplayBubble && displayBubble) {
+                marker.showBubble(currentTooltip, MapView.this, true, navigatorClick);
             }
         }
     }
@@ -583,6 +622,27 @@ public class MapView extends ViewGroup implements MapViewConstants, MapEventsRec
                 new ItemizedIconOverlay.OnItemGestureListener<Marker>() {
                     public boolean onItemSingleTapUp(final int index, final Marker item) {
                         selectMarker(item);
+                        return true;
+                    }
+
+                    public boolean onItemLongPress(final int index, final Marker item) {
+                        if (mMapViewListener != null) {
+                            mMapViewListener.onLongPressMarker(MapView.this, item);
+                        }
+                        return true;
+                    }
+                }
+        );
+        addListener(defaultMarkerOverlay);
+        defaultMarkerOverlay.setClusteringEnabled(mIsClusteringEnabled, mOnDrawClusterListener, mMinZoomForClustering);
+        addItemizedOverlay(defaultMarkerOverlay);
+    }
+
+    private void setDefaultItemizedOverlay(final OnClickListener navigationClick) {
+        defaultMarkerOverlay = new ItemizedIconOverlay(getContext(), defaultMarkerList,
+                new ItemizedIconOverlay.OnItemGestureListener<Marker>() {
+                    public boolean onItemSingleTapUp(final int index, final Marker item) {
+                        selectMarker(item, navigationClick);
                         return true;
                     }
 

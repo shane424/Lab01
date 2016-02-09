@@ -35,9 +35,10 @@ public class CustomInfoWindow extends InfoWindow {
     /**
      * Dynamically set the content in the CustomInfoWindow
      * @param overlayItem The tapped Marker
+     * @param navigatorClick
      */
     @Override
-    public void onOpen(Marker overlayItem) {
+    public void onOpen(Marker overlayItem, View.OnClickListener navigatorClick) {
         String title = overlayItem.getTitle();
         ((TextView) mView.findViewById(R.id.customTooltip_title)).setText(title);
     }

@@ -13,13 +13,16 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+import org.json.JSONObject;
+
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, NavigationFragment.onSearchListener {
 
 	private DrawerLayout          mDrawerLayout;
 	private ActionBarDrawerToggle mDrawerToggle;
 	private NavigationView        mNavigationView;
 	private Menu                  testFragmentNames;
 	private int selectedFragmentIndex = 0;
+	private FragmentManager fragmentManager = getSupportFragmentManager();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 		testFragmentNames.add(Menu.NONE, i++, Menu.NONE, getString(R.string.rotatedMapTestMap));
 		testFragmentNames.add(Menu.NONE, i++, Menu.NONE, getString(R.string.clusteredMarkersTestMap));
 		testFragmentNames.add(Menu.NONE, i++, Menu.NONE, getString(R.string.mbTilesTestMap));
-        testFragmentNames.add(Menu.NONE, i, Menu.NONE, getString(R.string.draggableMarkersTestMap));
+		testFragmentNames.add(Menu.NONE, i, Menu.NONE, getString(R.string.draggableMarkersTestMap));
 
 
 		// Set the drawer toggle as the DrawerListener
@@ -158,16 +161,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 			case 19:
 				fragment = new MBTilesTestFragment();
 				break;
-            case 20:
-                fragment = new DraggableMarkersTestFragment();
-                break;
+			case 20:
+				fragment = new DraggableMarkersTestFragment();
+				break;
 			default:
 				fragment = new MainTestFragment();
 				break;
 		}
 
 		// Insert the fragment by replacing any existing fragment
-		FragmentManager fragmentManager = getSupportFragmentManager();
 		fragmentManager.beginTransaction()
 				.replace(R.id.content_frame, fragment)
 				.commit();
@@ -193,5 +195,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 		} else {
 			super.onBackPressed();
 		}
+	}
+
+	@Override
+	public void onLocationFound(String s) {
+		NavigationMapFragment f = new NavigationMapFragment();
+		Bundle b = new Bundle();
+		b.putString("JSONObject", s);
+		f.setArguments(b);
+		fragmentManager.beginTransaction()
+				.replace(R.id.content_frame, f)
+				.commit();
+
+		mDrawerLayout.closeDrawer(mNavigationView);
 	}
 }
